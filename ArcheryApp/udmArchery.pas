@@ -13,16 +13,26 @@ uses
 
   TMSLogging,
   TMSLoggingCore,
-  TMSLoggingTextOutputHandler
+  TMSLoggingTextOutputHandler, IPPeerClient, IPPeerServer,
+  System.Tether.Manager, System.Tether.AppProfile,
+  TMSLoggingTetheringOutputHandler
   ;
 
 type
   TdmArchery = class(TDataModule)
     fdConArchery: TFDConnection;
     FDMoniCustomClientLink1: TFDMoniCustomClientLink;
+    TetheringAppProfile1: TTetheringAppProfile;
+    TetheringManager1: TTetheringManager;
     procedure DataModuleCreate(Sender: TObject);
+    procedure FDMoniCustomClientLink1Output(ASender: TFDMoniClientLinkBase;
+      const AClassName, AObjName, AMessage: string);
+    procedure TetheringAppProfile1AfterConnectProfile(const Sender: TObject;
+      const AProfileInfo: TTetheringProfileInfo);
   private
     { Private declarations }
+
+    fProfileInfo : TTetheringProfileInfo;
     function GetCountryID (aCountryAbbreviation : string) : string;
     procedure BeforeOpen (aDataset : TDataset);
     procedure BeforeClose(aDataset : TDataset);
@@ -77,8 +87,15 @@ begin
   ['DemoApp.log']
    );
 
+
   TMSLogger.Info('Application Started');
 
+end;
+
+procedure TdmArchery.FDMoniCustomClientLink1Output(
+  ASender: TFDMoniClientLinkBase; const AClassName, AObjName, AMessage: string);
+begin
+  TMSLogger.Debug(Format('FireDAC [%s.%s] %s', [AClassName, AObjName, AMessage] ));
 end;
 
 function TdmArchery.GetArchers(aCountryAbbreviation: string): TArchers ;
@@ -101,6 +118,7 @@ begin
       lQry.ParamByName('countryID').asString := lCountryID;
     end;
     lQry.Open;
+    TMSLogger.Info(format('There are %d records for country %s', [lQry.RecordCount, aCountryAbbreviation]) );
     while not lQry.eof  do
     begin
       var lArcher := TArcher.Create;
@@ -124,6 +142,7 @@ end;
 
 function TdmArchery.GetCountryID(aCountryAbbreviation: string): string;
 begin
+  TMSLogger.Info(Format('GetCountryID called with %s',[aCountryAbbreviation]));
   var lQry := TFDQuery.Create(nil);
   try
     lQry.Connection := fdConArchery;
@@ -137,6 +156,15 @@ begin
   finally
     lQry.Free;
   end;
+end;
+
+procedure TdmArchery.TetheringAppProfile1AfterConnectProfile(
+  const Sender: TObject; const AProfileInfo: TTetheringProfileInfo);
+begin
+  fProfileInfo :=  AProfileInfo;
+  TTMSLoggingTetheringOutputHandler.Profile :=  TetheringAppProfile1;
+
+  TMSLogger.RegisterOutputHandlerClass(TTMSLoggingTetheringOutputHandler);
 end;
 
 end.

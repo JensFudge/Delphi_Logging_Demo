@@ -167,6 +167,7 @@
         <DCCReference Include="uArcher.pas"/>
         <DCCReference Include="uBowtype.pas"/>
         <DCCReference Include="uCountry.pas"/>
+        <DCCReference Include="TMSLoggingTetheringOutputHandler.pas"/>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>

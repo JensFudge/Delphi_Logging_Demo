@@ -6,7 +6,8 @@ uses
   udmArchery in 'udmArchery.pas' {dmArchery: TDataModule},
   uArcher in 'uArcher.pas',
   uBowtype in 'uBowtype.pas',
-  uCountry in 'uCountry.pas';
+  uCountry in 'uCountry.pas',
+  TMSLoggingTetheringOutputHandler in 'TMSLoggingTetheringOutputHandler.pas';
 
 {$R *.res}
 

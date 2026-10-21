@@ -10,7 +10,7 @@ type
   TForm1 = class(TForm)
     btnGetArchers: TButton;
     lvArchers: TListView;
-    Edit1: TEdit;
+    edCountry: TEdit;
     procedure btnGetArchersClick(Sender: TObject);
   private
     { Private declarations }
@@ -24,7 +24,10 @@ var
 implementation
 
 uses
-  udmArchery;
+  udmArchery
+  ,TMSLogging,
+  TMSLoggingCore
+  ;
 
 {$R *.dfm}
 
@@ -32,7 +35,8 @@ uses
 
 procedure TForm1.btnGetArchersClick(Sender: TObject);
 begin
- var lArchers :=   dmArchery.GetArchers(Edit1.Text);
+ TMSLogger.info('btnGetArchersClick clicked');
+ var lArchers :=   dmArchery.GetArchers(EdCountry.Text);
  try
    lvArchers.Clear;
    for var lArcher in lArchers do

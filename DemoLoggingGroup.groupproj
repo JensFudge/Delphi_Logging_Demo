@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{7E4C6303-DDD4-4894-8E1F-8230593850E5}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ArcheryApp\ArcheryApp.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="LogviewerApp\LogViewerApp.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ArcheryApp">
+        <MSBuild Projects="ArcheryApp\ArcheryApp.dproj"/>
+    </Target>
+    <Target Name="ArcheryApp:Clean">
+        <MSBuild Projects="ArcheryApp\ArcheryApp.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ArcheryApp:Make">
+        <MSBuild Projects="ArcheryApp\ArcheryApp.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="LogViewerApp">
+        <MSBuild Projects="LogviewerApp\LogViewerApp.dproj"/>
+    </Target>
+    <Target Name="LogViewerApp:Clean">
+        <MSBuild Projects="LogviewerApp\LogViewerApp.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="LogViewerApp:Make">
+        <MSBuild Projects="LogviewerApp\LogViewerApp.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ArcheryApp;LogViewerApp"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ArcheryApp:Clean;LogViewerApp:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ArcheryApp:Make;LogViewerApp:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>

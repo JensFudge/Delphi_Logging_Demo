@@ -35,7 +35,7 @@ object Form1: TForm1
     TabOrder = 1
     ViewStyle = vsReport
   end
-  object Edit1: TEdit
+  object edCountry: TEdit
     Left = 120
     Top = 33
     Width = 121
